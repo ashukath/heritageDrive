@@ -1,0 +1,29 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.format.enabled": true,
+    "java.dependency.packagePresentation": "hierarchical",
+    "java.project.sourcePaths": [
+        "backend/src/main/java",
+        "backend/src/test/java"
+    ],
+    "java.project.resourcePaths": [
+        "backend/src/main/resources",
+        "backend/src/test/resources"
+    ],
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-17",
+            "path": "/Users/auz/Library/Java/JavaVirtualMachines/temurin-17.0.14/Contents/Home"
+        }
+    ],
+    "java.jdt.ls.java.home": "/Users/auz/Library/Java/JavaVirtualMachines/temurin-17.0.14/Contents/Home",
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    },
+    "java.import.gradle.enabled": true,
+    "java.import.gradle.wrapper.enabled": true
+} 

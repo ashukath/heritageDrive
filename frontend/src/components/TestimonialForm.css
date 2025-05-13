@@ -1,0 +1,97 @@
+.testimonial-form {
+  padding: 1rem;
+}
+
+.testimonial-form h2 {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.form-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.form-checkbox input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.button-secondary {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+}
+
+.button-secondary:hover {
+  background-color: var(--light-bg);
+}
+
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Form validation styles */
+.form-input.error {
+  border-color: #e53e3e;
+}
+
+.error-message {
+  color: #e53e3e;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* Success message styles */
+.success-message {
+  text-align: center;
+  padding: 2rem;
+  animation: fadeIn 0.5s ease-in;
+}
+
+.success-message h2 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.success-message p {
+  color: var(--text-color);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* File input styles */
+input[type="file"] {
+  padding: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.form-help {
+  display: block;
+  color: #718096;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+} 
