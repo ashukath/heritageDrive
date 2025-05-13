@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${POSTGRES_DB:-heritagedrive}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER:-heritagedrive_user}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD:-heritagedrive_password}
+    volumes:
+      - backend_data:/app/data
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8080/api
+    volumes:
+      - frontend_data:/app/node_modules
+    depends_on:
+      - backend
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-heritagedrive}
+      - POSTGRES_USER=${POSTGRES_USER:-heritagedrive_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-heritagedrive_password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-heritagedrive_user} -d ${POSTGRES_DB:-heritagedrive}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  backend_data:
+    name: heritage_backend_data
+  frontend_data:
+    name: heritage_frontend_data
+  postgres_data:
+    name: heritage_postgres_data 

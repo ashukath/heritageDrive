@@ -1,115 +1,144 @@
 # Heritage Drive
 
-A full-stack application for a professional driver service, featuring testimonial management and a beautiful landing page.
+A modern web application for preserving and sharing cultural heritage through stories and testimonials.
 
-## Project Structure
+## 🚀 Quick Start
 
-```
-heritage-drive/
-├── backend/                # Spring Boot Application
-│   ├── src/
-│   │   ├── main/
-│   │   │   ├── java/
-│   │   │   └── resources/
-│   │   └── test/
-│   └── build.gradle
-├── frontend/              # React Application
-│   ├── src/
-│   ├── public/
-│   └── package.json
-├── build.gradle
-└── settings.gradle
+### Prerequisites
+
+- Docker and Docker Compose
+- Git
+
+### Setup
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/heritagedrive.git
+cd heritagedrive
 ```
 
-## Prerequisites
+2. Create environment file:
+```bash
+# Copy the example env file and modify it with your secure values
+cp .env.example .env
+```
 
-- Java 17
-- Node.js 18+ and npm
-- PostgreSQL 15+
-- Gradle 8.5+
+3. Update the `.env` file with secure passwords and configurations:
+```env
+POSTGRES_DB=heritagedrive
+POSTGRES_USER=your_secure_username
+POSTGRES_PASSWORD=your_secure_password
+SPRING_DATASOURCE_USERNAME=your_secure_username
+SPRING_DATASOURCE_PASSWORD=your_secure_password
+SPRING_PROFILES_ACTIVE=prod
+REACT_APP_API_URL=http://localhost:8080/api
+```
 
-## Getting Started
+4. Build and start the containers:
+```bash
+docker-compose up --build
+```
 
-### Backend Setup
+The application will be available at:
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:8080
 
-1. Navigate to the backend directory:
+## 🏗️ Project Structure
+
+```
+heritagedrive/
+├── frontend/          # React frontend application
+├── backend/          # Spring Boot backend application
+├── docker-compose.yml # Docker composition file
+└── .env              # Environment variables (create from .env.example)
+```
+
+## 🔒 Security Best Practices
+
+1. Environment Variables
+   - Never commit the `.env` file
+   - Use strong, unique passwords
+   - Change default credentials in production
+
+2. Docker Volumes
+   - Backend data: `/app/data`
+   - Frontend node_modules: `/app/node_modules`
+   - PostgreSQL data: `/var/lib/postgresql/data`
+
+3. Container Security
+   - Services run with restart policy
+   - Database is only accessible within Docker network
+   - Minimal base images used (alpine)
+
+## 🛠️ Development
+
+### Running in Development Mode
+
+1. Backend (Spring Boot):
 ```bash
 cd backend
+./gradlew bootRun
 ```
 
-2. Build the project:
-```bash
-../gradlew build
-```
-
-3. Run the application:
-```bash
-../gradlew bootRun
-```
-
-The backend will start on `http://localhost:8080`
-
-### Frontend Setup
-
-1. Navigate to the frontend directory:
+2. Frontend (React):
 ```bash
 cd frontend
-```
-
-2. Install dependencies:
-```bash
 npm install
-```
-
-3. Start the development server:
-```bash
 npm start
 ```
 
-The frontend will start on `http://localhost:3000`
+### Making Changes
 
-### Database Setup
+1. Frontend changes:
+   - Edit files in `frontend/src`
+   - Changes will hot-reload
 
-1. Create a PostgreSQL database:
-```sql
-CREATE DATABASE heritage_drive;
+2. Backend changes:
+   - Edit files in `backend/src`
+   - Application will auto-restart
+
+## 📦 Production Deployment
+
+1. Update environment variables:
+   - Set strong passwords
+   - Configure proper API URLs
+   - Enable production mode
+
+2. Build and deploy:
+```bash
+docker-compose -f docker-compose.yml up -d --build
 ```
 
-2. Update the database configuration in `backend/src/main/resources/application.properties` if needed.
-
-## Features
-
-1. Landing Page
-   - Beautiful intro with photos
-   - "Why ride with a 30-year veteran" section
-   - Call to Action: "Submit Your Testimonial"
-
-2. Testimonial Submission
-   - Form with name, message, rating, and image upload
-   - REST API integration with backend
-
-3. Backend API
-   - POST /api/testimonials - Submit new testimonials
-   - GET /api/testimonials - Retrieve testimonials
-   - File system storage for images
-   - PostgreSQL database for data persistence
-
-## Development
-
-- Backend API: http://localhost:8080
-- Frontend: http://localhost:3000
-- API Documentation: http://localhost:8080/swagger-ui.html (coming soon)
-
-## Testing
-
-### Backend Tests
+3. Monitor logs:
 ```bash
-cd backend
-../gradlew test
+docker-compose logs -f
 ```
 
-### Frontend Tests
+## 🧹 Maintenance
+
+### Backup
+
+1. Database backup:
 ```bash
-cd frontend
-npm test
-``` 
+docker-compose exec db pg_dump -U $POSTGRES_USER $POSTGRES_DB > backup.sql
+```
+
+### Cleanup
+
+1. Stop and remove containers:
+```bash
+docker-compose down
+```
+
+2. Remove volumes (caution - this deletes all data):
+```bash
+docker-compose down -v
+```
+
+## 📝 License
+
+[Your chosen license]
+
+## 👥 Contributing
+
+[Your contribution guidelines] 
