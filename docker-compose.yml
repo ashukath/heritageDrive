@@ -5,21 +5,26 @@ services:
     build: 
       context: ./backend
       dockerfile: Dockerfile
+    container_name: heritage-backend
     ports:
       - "8080:8080"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${POSTGRES_DB:-heritagedrive}
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://heritage-db:5432/${POSTGRES_DB:-heritagedrive}
       - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER:-heritagedrive_user}
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD:-heritagedrive_password}
+      - SPRING_PROFILES_ACTIVE=docker
     volumes:
-      - backend_data:/app/data
+      - backend_uploads:/app/uploads
     depends_on:
       - db
+    networks:
+      - heritage-network
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    container_name: heritage-frontend
     ports:
       - "3001:3000"
     environment:
@@ -28,9 +33,12 @@ services:
       - frontend_data:/app/node_modules
     depends_on:
       - backend
+    networks:
+      - heritage-network
 
   db:
     image: postgres:16-alpine
+    container_name: heritage-db
     environment:
       - POSTGRES_DB=${POSTGRES_DB:-heritagedrive}
       - POSTGRES_USER=${POSTGRES_USER:-heritagedrive_user}
@@ -39,16 +47,16 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-heritagedrive_user} -d ${POSTGRES_DB:-heritagedrive}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    restart: unless-stopped
+    networks:
+      - heritage-network
+
+networks:
+  heritage-network:
+    driver: bridge
 
 volumes:
-  backend_data:
-    name: heritage_backend_data
+  backend_uploads:
+    name: heritage_backend_uploads
   frontend_data:
     name: heritage_frontend_data
   postgres_data:

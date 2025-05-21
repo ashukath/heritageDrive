@@ -1,23 +1,22 @@
-FROM eclipse-temurin:21-jdk-alpine AS builder
+FROM gradle:8.5-jdk21
 
 WORKDIR /app
 
-# Install gradle
-RUN apk add --no-cache gradle
+# Install wget for healthcheck
+RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/*
 
-# Copy only the build files first to cache dependencies
-COPY build.gradle settings.gradle ./
-COPY gradle gradle/
-RUN gradle dependencies --no-daemon
+# Copy the project files
+COPY . .
 
-# Now copy source code and build
-COPY src src/
+# Build the application
 RUN gradle build -x test --no-daemon
 
-FROM eclipse-temurin:21-jre-alpine
-
-WORKDIR /app
-COPY --from=builder /app/build/libs/*.jar app.jar
-
 EXPOSE 8080
-CMD ["java", "-jar", "app.jar"] 
+
+# Create volume for file uploads
+VOLUME /app/uploads
+
+# Set environment variable for upload directory
+ENV APP_FILE_UPLOAD_DIR=/app/uploads
+
+CMD ["java", "-jar", "build/libs/heritagedrive-0.0.1-SNAPSHOT.jar"] 

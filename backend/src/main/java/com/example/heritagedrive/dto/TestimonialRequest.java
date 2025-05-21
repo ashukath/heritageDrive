@@ -9,6 +9,7 @@ public class TestimonialRequest {
     private String name;
 
     @Email(message = "Please provide a valid email address")
+    @NotBlank(message = "Email is required")
     private String email;
 
     @Min(value = 1, message = "Rating must be between 1 and 5")
